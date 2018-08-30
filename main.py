@@ -36,8 +36,8 @@ def read_data():
     with open(filename) as file:
         reader = csv.reader(file)
         for row in reader:
-            converted_row = [float(row[0]), float(
-                row[1]), float(row[2]), float(row[3])]
+            converted_row = [float(row[0]), float(row[1]),
+                             float(row[2]), float(row[3])]
             features.append(np.array(converted_row))
             labels.append(row[4])
     return (np.array(features), labels)
@@ -100,7 +100,7 @@ def create_plot(data, x_index, y_index, x_label, y_label, plot_label):
             cols.append('b')
 
     # create the scatter plot
-    plt.scatter(features[:,x_index], features[:,y_index], c=cols)
+    plt.scatter(features[:, x_index], features[:, y_index], c=cols)
 
     # put in labels and save
     plt.xlabel(x_label)
