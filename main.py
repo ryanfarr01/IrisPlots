@@ -88,6 +88,7 @@ def create_plot(data, x_index, y_index, x_label, y_label, plot_label):
         Title of the plot and filename for the saved image.
     """
     # get the x axis, y axis, and colors
+    plt.clf()
     features = data[0]
     labels = data[1]
     cols = []
