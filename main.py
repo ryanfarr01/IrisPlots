@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+import numpy as np
 import csv
 
 '''
@@ -22,21 +23,24 @@ def read_data():
     """ read_data function
 
     Reads the CSV data stored in 'iris.data' and returns it as an Nxp
-    matrix, where N is the number of samples and p is the number of features.
+    matrix, where N is the number of samples and p is the number of features
+    as well as a list of labels.
 
     Returns
     -------
-    Nxp Matrix
+    Tuple (Nxp Matrix, list)
     """
     filename = 'iris.data'
-    data = []
+    features = []
+    labels = []
     with open(filename) as file:
         reader = csv.reader(file)
         for row in reader:
             converted_row = [float(row[0]), float(
-                row[1]), float(row[2]), float(row[3]), row[4]]
-            data.append(converted_row)
-    return data
+                row[1]), float(row[2]), float(row[3])]
+            features.append(np.array(converted_row))
+            labels.append(row[4])
+    return (np.array(features), labels)
 
 
 def plot_data(data):
@@ -46,7 +50,7 @@ def plot_data(data):
 
     Arguments
     ---------
-    data : Nxp Matrix
+    data : (Nxp Matrix, list)
         The iris data.
     """
     create_plot(data, 0, 1, 'Sepal Length (cm)',
@@ -70,7 +74,7 @@ def create_plot(data, x_index, y_index, x_label, y_label, plot_label):
 
     Arguments
     ---------
-    data : Nxp Matrix
+    data : (Nxp Matrix, list)
         The iris data.
     x_index : int
         The column index for the x-axis.
@@ -84,19 +88,19 @@ def create_plot(data, x_index, y_index, x_label, y_label, plot_label):
         Title of the plot and filename for the saved image.
     """
     # get the x axis, y axis, and colors
-    xs = [d[x_index] for d in data]
-    ys = [d[y_index] for d in data]
+    features = data[0]
+    labels = data[1]
     cols = []
-    for row in data:
-        if row[4] == 'Iris-setosa':
+    for row in labels:
+        if row == 'Iris-setosa':
             cols.append('r')
-        elif row[4] == 'Iris-versicolor':
+        elif row == 'Iris-versicolor':
             cols.append('g')
-        elif row[4] == 'Iris-virginica':
+        else:
             cols.append('b')
 
     # create the scatter plot
-    plt.scatter(xs, ys, c=cols)
+    plt.scatter(features[:,x_index], features[:,y_index], c=cols)
 
     # put in labels and save
     plt.xlabel(x_label)
